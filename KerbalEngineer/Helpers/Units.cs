@@ -134,7 +134,7 @@ namespace KerbalEngineer.Helpers {
         }
 
         public static string ToMach(double value) {
-            return value.ToString("0.00") + "Ma";
+            return "Mach "+value.ToString("0.00");
         }
 
         public static string ToMass(double value, int decimals = -9000) {
