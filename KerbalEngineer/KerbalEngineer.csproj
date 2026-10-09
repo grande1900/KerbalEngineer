@@ -134,8 +134,8 @@
     <Compile Include="Flight\Readouts\Rendezvous\TimeToRelativeAscendingNode.cs" />
     <Compile Include="Flight\Readouts\Rendezvous\TimeToTransferAngle.cs" />
     <Compile Include="Flight\Readouts\Surface\BearingToWaypoint.cs" />
-    <Compile Include="Flight\Readouts\Surface\DynamicPressure.cs" />
     <Compile Include="Flight\Readouts\Surface\AtmosphericPressure.cs" />
+    <Compile Include="Flight\Readouts\Surface\EquivalentAirspeed.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactMarker.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactBiome.cs" />
     <Compile Include="Flight\Readouts\Surface\Slope.cs" />
@@ -169,6 +169,9 @@
     <Compile Include="Flight\Readouts\Vessel\Name.cs" />
     <Compile Include="Flight\Readouts\Vessel\AttitudeProcessor.cs" />
     <Compile Include="Flight\Readouts\Vessel\DeltaVCurrentTotal.cs" />
+    <Compile Include="Flight\Readouts\Vessel\HeadingAccel.cs" />
+    <Compile Include="Flight\Readouts\Vessel\RollAccel.cs" />
+    <Compile Include="Flight\Readouts\Vessel\PitchAccel.cs" />
     <Compile Include="Flight\Readouts\Vessel\PitchRate.cs" />
     <Compile Include="Flight\Readouts\Vessel\HeadingRate.cs" />
     <Compile Include="Flight\Readouts\Vessel\RCSDeltaV.cs" />
