@@ -1,0 +1,61 @@
+﻿// 
+//     Kerbal Engineer Redux
+// 
+//     Copyright (C) 2014 CYBUTEK
+// 
+//     This program is free software: you can redistribute it and/or modify
+//     it under the terms of the GNU General Public License as published by
+//     the Free Software Foundation, either version 3 of the License, or
+//     (at your option) any later version.
+// 
+//     This program is distributed in the hope that it will be useful,
+//     but WITHOUT ANY WARRANTY; without even the implied warranty of
+//     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//     GNU General Public License for more details.
+// 
+//     You should have received a copy of the GNU General Public License
+//     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// 
+
+#region Using Directives
+
+using KerbalEngineer.Extensions;
+using KerbalEngineer.Flight.Sections;
+using System;
+
+#endregion
+
+namespace KerbalEngineer.Flight.Readouts.Surface
+{
+    public class EquivalentAirSpeed: ReadoutModule
+    {
+        #region Constructors
+
+        public EquivalentAirSpeed()
+        {
+            this.Name = "Equivalent Airspeed";
+            this.ShortName = "EAS";
+            this.Category = ReadoutCategory.GetCategory("Surface");
+            this.HelpString = "Shows the vessel's .";
+            this.IsDefault = true;
+        }
+
+        #endregion
+
+        #region Methods: public
+
+        public override void Draw(Unity.Flight.ISectionModule section)
+        {
+            var eas = Math.Sqrt( FlightGlobals.ActiveVessel.srf_velocity.sqrMagnitude * FlightGlobals.ActiveVessel.atmDensity / FlightGlobals.ActiveVessel.mainBody.atmDensityASL );
+
+			this.DrawLine(eas.ToSpeed(section.IsHud ? HudDecimalPlaces : DecimalPlaces), section);
+
+            // This workaround was used for KSP 1.0.3 and 1.0.4 where horizontalSrfSpeed was really badly broken
+            //var ves = FlightGlobals.ActiveVessel;
+            //double horizSpeed = Math.Sqrt(ves.srfSpeed * ves.srfSpeed - ves.verticalSpeed * ves.verticalSpeed);
+            //this.DrawLine(horizSpeed.ToSpeed(section.IsHud ? HudDecimalPlaces : DecimalPlaces), section);
+        }
+
+        #endregion
+    }
+}

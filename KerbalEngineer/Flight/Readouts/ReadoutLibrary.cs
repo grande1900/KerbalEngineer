@@ -104,12 +104,14 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new HorizontalSpeed());
                 readouts.Add(new HorizontalAcceleration());
                 readouts.Add(new MachNumber());
+				readouts.Add(new EquivalentAirSpeed());
                 readouts.Add(new Latitude());
                 readouts.Add(new Longitude());
                 readouts.Add(new GeeForce());
                 readouts.Add(new TerminalVelocity());
                 readouts.Add(new AtmosphericEfficiency());
                 readouts.Add(new AtmosphericPressure());
+                //readouts.Add(new DynamicPressure());
                 readouts.Add(new Biome());
                 readouts.Add(new Situation());
                 readouts.Add(new Slope());
