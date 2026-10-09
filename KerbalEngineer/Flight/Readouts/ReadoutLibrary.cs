@@ -160,6 +160,9 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new HeadingRate());
                 readouts.Add(new PitchRate());
                 readouts.Add(new RollRate());
+                readouts.Add(new HeadingAccel());
+                readouts.Add(new PitchAccel());
+                readouts.Add(new RollAccel());
                 readouts.Add(new RCSDeltaV());
                 readouts.Add(new RCSIsp());
                 readouts.Add(new RCSThrust());

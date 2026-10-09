@@ -38,14 +38,20 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
 
         private double heading;
         private double headingRate;
-        private Vector3 north = Vector3.zero;
+		private double headingAccel;
+		private Vector3 north = Vector3.zero;
         private double pitch;
         private double pitchRate;
+        private double pitchAccel;
         private double previousHeading;
         private double previousPitch;
         private double previousRoll;
-        private double roll;
+		private double previousHeadingRate;
+		private double previousPitchRate;
+		private double previousRollRate;
+		private double roll;
         private double rollRate;
+        private double rollAccel;
         private Quaternion surfaceRotation;
         private Vector3 up = Vector3.zero;
 
@@ -63,7 +69,12 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
             get { return instance.headingRate; }
         }
 
-        public static AttitudeProcessor Instance
+		public static double HeadingAccel
+		{
+			get { return instance.headingAccel; }
+		}
+
+		public static AttitudeProcessor Instance
         {
             get { return instance; }
         }
@@ -78,7 +89,12 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
             get { return instance.pitchRate; }
         }
 
-        public static double Roll
+		public static double PitchAccel
+		{
+			get { return instance.pitchAccel; }
+		}
+
+		public static double Roll
         {
             get { return instance.roll; }
         }
@@ -87,8 +103,13 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
         {
             get { return instance.rollRate; }
         }
-        
-        public static double GlideslopeAngle { get; private set; }
+
+		public static double RollAccel
+		{
+			get { return instance.rollAccel; }
+		}
+
+		public static double GlideslopeAngle { get; private set; }
 
         public static double DisplacementAngle { get; private set; }
         public static double AttackAngle { get; private set; }
@@ -115,8 +136,12 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
             this.previousPitch = this.pitch;
             this.previousRoll = this.roll;
 
-            // This code was derived from MechJeb2's implementation for getting the vessel's surface relative rotation.
-            this.heading = this.surfaceRotation.eulerAngles.y;
+			this.previousHeadingRate = this.headingRate;
+			this.previousPitchRate = this.pitchRate;
+			this.previousRollRate = this.rollRate;
+
+			// This code was derived from MechJeb2's implementation for getting the vessel's surface relative rotation.
+			this.heading = this.surfaceRotation.eulerAngles.y;
             this.pitch = this.surfaceRotation.eulerAngles.x > 180.0f
                 ? 360.0f - this.surfaceRotation.eulerAngles.x
                 : -this.surfaceRotation.eulerAngles.x;
@@ -128,6 +153,9 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
             this.pitchRate   = (this.pitch - this.previousPitch) / TimeWarp.fixedDeltaTime;
             this.rollRate    = (this.roll - this.previousRoll) / TimeWarp.fixedDeltaTime;
 
+            this.headingAccel= (this.headingRate - this.previousHeadingRate) / TimeWarp.fixedDeltaTime;
+            this.pitchAccel  = (this.pitchRate - this.previousPitchRate) / TimeWarp.fixedDeltaTime;
+            this.rollAccel   = (this.rollRate - this.previousRollRate) / TimeWarp.fixedDeltaTime;
 
             //Also stolen from MechJeb2
             
