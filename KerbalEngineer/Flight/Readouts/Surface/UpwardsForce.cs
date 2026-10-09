@@ -55,8 +55,7 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
 		{
 			if ( SimulationProcessor.ShowDetails )
 			{
-				this.gravity = FlightGlobals.getGeeForceAtPosition( FlightGlobals.ship_position );
-				var lwr = Vector3d.Dot( AtmosphericProcessor.Lift + this.gravity * SimulationProcessor.LastStage.mass, FlightGlobals.ActiveVessel.upAxis );
+				var lwr = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, FlightGlobals.ActiveVessel.upAxis );
 				this.DrawLine( lwr.ToForce( section.IsHud ? HudDecimalPlaces : DecimalPlaces ), section );
 			}
 		}

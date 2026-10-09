@@ -35,7 +35,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 
 		public LiftToDrag()
 		{
-			this.Name = "Lift to Drag ratio";
+			this.Name = "Lift to Drag Ratio";
 			this.ShortName = "LDR";
 			this.Category = ReadoutCategory.GetCategory( "Surface" );
 			this.HelpString = "Shows the vessel's current Lift/Drag ratio.";

@@ -41,7 +41,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 
 		public LiftToWeight()
 		{
-			this.Name = "Lift to Weight ratio";
+			this.Name = "Lift to Weight Ratio";
 			this.ShortName = "LWR";
 			this.Category = ReadoutCategory.GetCategory( "Surface" );
 			this.HelpString = "Shows the vessel's current Lift/Weight ratio.";
@@ -57,7 +57,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 			if ( SimulationProcessor.ShowDetails && AtmosphericProcessor.ShowDetails )
 			{
 				this.gravity = FlightGlobals.getGeeForceAtPosition( FlightGlobals.ship_position );
-				var lwr = Vector3d.Dot( AtmosphericProcessor.Lift, this.gravity * SimulationProcessor.LastStage.mass );
+				var lwr = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, this.gravity * SimulationProcessor.LastStage.mass );
 				this.DrawLine( lwr.ToString( "F2" ), section );
 			}
 		}

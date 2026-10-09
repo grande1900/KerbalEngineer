@@ -116,7 +116,7 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new TerminalVelocity());
                 readouts.Add(new AtmosphericEfficiency());
                 readouts.Add(new AtmosphericPressure());
-                //readouts.Add(new DynamicPressure());
+                readouts.Add(new DynamicPressure());
                 readouts.Add(new Biome());
                 readouts.Add(new Situation());
                 readouts.Add(new Slope());

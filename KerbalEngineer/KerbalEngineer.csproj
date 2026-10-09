@@ -134,6 +134,7 @@
     <Compile Include="Flight\Readouts\Rendezvous\TimeToRelativeAscendingNode.cs" />
     <Compile Include="Flight\Readouts\Rendezvous\TimeToTransferAngle.cs" />
     <Compile Include="Flight\Readouts\Surface\BearingToWaypoint.cs" />
+    <Compile Include="Flight\Readouts\Surface\DynamicPressure.cs" />
     <Compile Include="Flight\Readouts\Surface\AtmosphericPressure.cs" />
     <Compile Include="Flight\Readouts\Surface\EquivalentAirspeed.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactMarker.cs" />
