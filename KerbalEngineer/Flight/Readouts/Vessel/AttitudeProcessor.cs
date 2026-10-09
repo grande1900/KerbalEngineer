@@ -149,11 +149,18 @@ namespace KerbalEngineer.Flight.Readouts.Vessel
                 ? 360.0f - this.surfaceRotation.eulerAngles.z
                 : -this.surfaceRotation.eulerAngles.z;
 
-            this.headingRate = (this.heading - this.previousHeading) / TimeWarp.fixedDeltaTime;
-            this.pitchRate   = (this.pitch - this.previousPitch) / TimeWarp.fixedDeltaTime;
-            this.rollRate    = (this.roll - this.previousRoll) / TimeWarp.fixedDeltaTime;
 
-            this.headingAccel= (this.headingRate - this.previousHeadingRate) / TimeWarp.fixedDeltaTime;
+			//this.headingRate = (this.heading - this.previousHeading) / TimeWarp.fixedDeltaTime;
+			//this.pitchRate   = (this.pitch - this.previousPitch) / TimeWarp.fixedDeltaTime;
+			//this.rollRate    = (this.roll - this.previousRoll) / TimeWarp.fixedDeltaTime;
+
+			var angVel = ( Quaternion.Inverse( vessel.GetTransform().rotation ) * vessel.GetComponent<Rigidbody>()?.angularVelocity ) ?? Vector3.zero;
+
+            this.headingRate = -angVel.z * Mathf.Rad2Deg;
+			this.pitchRate = -angVel.x * Mathf.Rad2Deg;
+			this.rollRate = -angVel.y * Mathf.Rad2Deg;
+
+			this.headingAccel= (this.headingRate - this.previousHeadingRate) / TimeWarp.fixedDeltaTime;
             this.pitchAccel  = (this.pitchRate - this.previousPitchRate) / TimeWarp.fixedDeltaTime;
             this.rollAccel   = (this.rollRate - this.previousRollRate) / TimeWarp.fixedDeltaTime;
 
