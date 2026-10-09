@@ -103,8 +103,13 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new VerticalAcceleration());
                 readouts.Add(new HorizontalSpeed());
                 readouts.Add(new HorizontalAcceleration());
-                readouts.Add(new MachNumber());
 				readouts.Add(new EquivalentAirSpeed());
+                readouts.Add(new MachNumber());
+                readouts.Add(new Lift());
+                readouts.Add(new LiftToDrag());
+                readouts.Add(new LiftToWeight());
+                readouts.Add(new UpwardsForce());
+                readouts.Add(new Drag());
                 readouts.Add(new Latitude());
                 readouts.Add(new Longitude());
                 readouts.Add(new GeeForce());
@@ -138,6 +143,7 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new ThrustTorque());
                 readouts.Add(new SurfaceThrustToWeight());
                 readouts.Add(new Gravity());
+                readouts.Add(new Weight());
                 readouts.Add(new Acceleration());
                 readouts.Add(new SuicideBurnAltitude());
                 readouts.Add(new SuicideBurnDistance());

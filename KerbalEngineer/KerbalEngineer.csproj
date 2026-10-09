@@ -138,6 +138,10 @@
     <Compile Include="Flight\Readouts\Surface\EquivalentAirspeed.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactMarker.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactBiome.cs" />
+    <Compile Include="Flight\Readouts\Surface\Drag.cs" />
+    <Compile Include="Flight\Readouts\Surface\LiftToWeight.cs" />
+    <Compile Include="Flight\Readouts\Surface\LiftToDrag.cs" />
+    <Compile Include="Flight\Readouts\Surface\Lift.cs" />
     <Compile Include="Flight\Readouts\Surface\Slope.cs" />
     <Compile Include="Flight\Readouts\Surface\Biome.cs" />
     <Compile Include="Flight\Readouts\Surface\HorizontalAcceleration.cs" />
@@ -203,6 +207,8 @@
     <Compile Include="Flight\Readouts\Vessel\ThrustOffsetAngle.cs" />
     <Compile Include="Flight\Readouts\Vessel\ThrustTorque.cs" />
     <Compile Include="Flight\Readouts\ReadoutModuleConfigNode.cs" />
+    <Compile Include="Flight\Readouts\Surface\UpwardsForce.cs" />
+    <Compile Include="Flight\Readouts\Vessel\Weight.cs" />
     <Compile Include="GuiDisplaySize.cs" />
     <Compile Include="Helpers\AngleHelper.cs" />
     <Compile Include="Helpers\Averager.cs" />

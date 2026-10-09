@@ -61,7 +61,9 @@ namespace KerbalEngineer.Flight.Readouts.Surface
         #region Fields
 
         private MethodInfo farTerminalVelocity;
-        private bool hasCheckedAeroMods;
+		private MethodInfo farStallFrac;
+		private MethodInfo farBallisticCoeff;
+		private bool hasCheckedAeroMods;
 
         #endregion
 
@@ -70,12 +72,17 @@ namespace KerbalEngineer.Flight.Readouts.Surface
         /// <summary>
         ///     Gets the deceleration caused by drag.
         /// </summary>
-        public static double Deceleration { get; private set; }
+        public static Vector3d Drag { get; private set; }
 
-        /// <summary>
-        ///     Gets the difference between current velocity and terminal velocity.
-        /// </summary>
-        public static double Efficiency { get; private set; }
+		/// <summary>
+		///     Gets the acceleration caused by lift.
+		/// </summary>
+		public static Vector3d Lift { get; private set; }
+
+		/// <summary>
+		///     Gets the difference between current velocity and terminal velocity.
+		/// </summary>
+		public static double Efficiency { get; private set; }
 
         /// <summary>
         ///     Gets whether FAR is installed.
@@ -107,14 +114,24 @@ namespace KerbalEngineer.Flight.Readouts.Surface
         /// </summary>
         public static double DynamicPressure { get; private set; }
 
-        #endregion
+		/// <summary>
+		///     Gets the stall fraction of the active vessel.
+		/// </summary>
+		public static double StallFraction { get; private set; }
 
-        #region IUpdatable Members
+		/// <summary>
+		///     Gets the ballistic coefficient of the active vessel.
+		/// </summary>
+		public static double BallisticCoeff { get; private set; }
 
-        /// <summary>
-        ///     Updates the details by recalculating if requested.
-        /// </summary>
-        public void Update()
+		#endregion
+
+		#region IUpdatable Members
+
+		/// <summary>
+		///     Updates the details by recalculating if requested.
+		/// </summary>
+		public void Update()
         {
             try
             {
@@ -134,20 +151,42 @@ namespace KerbalEngineer.Flight.Readouts.Surface
                 if (FarInstalled)
                 {
                     TerminalVelocity = (double)this.farTerminalVelocity.Invoke(null, null);
+                    StallFraction = (double)this.farStallFrac.Invoke(null, null);
+                    BallisticCoeff = (double)this.farBallisticCoeff.Invoke(null, null);
                 }
                 else
-                {
-                    var m = FlightGlobals.ActiveVessel.parts.Sum(part => PartExtensions.GetWetMass(part)) * 1000.0;
+				{
+					var p = FlightGlobals.ActiveVessel.atmDensity;
+
+					var m = FlightGlobals.ActiveVessel.parts.Sum(part => PartExtensions.GetWetMass(part)) * 1000.0;
                     var g = FlightGlobals.getGeeForceAtPosition(FlightGlobals.ship_position).magnitude;
-                    var a = FlightGlobals.ActiveVessel.parts.Sum(part => part.DragCubes.AreaDrag) * PhysicsGlobals.DragCubeMultiplier;
-                    var p = FlightGlobals.ActiveVessel.atmDensity;
-                    var c = PhysicsGlobals.DragMultiplier;
+                    var Q = 0.5 * p * FlightGlobals.ActiveVessel.srf_velocity.sqrMagnitude;
 
-                    TerminalVelocity = Math.Sqrt((2.0 * m * g) / (p * a * c));
 
-                    StaticPressure = FlightGlobals.ActiveVessel.staticPressurekPa;
-                    DynamicPressure = FlightGlobals.ActiveVessel.dynamicPressurekPa;
-                }
+					var curLift = Vector3.zero;
+					var curDrag = Vector3.zero;
+
+					curDrag += FlightGlobals.ActiveVessel.parts.Aggregate( Vector3.zero, ( s, part ) => s + ( -part.dragVectorDir * part.dragScalar ) );
+
+					var liftBodies = FlightGlobals.ActiveVessel.parts.Where( part => !part.hasLiftModule );
+					curLift += liftBodies.Aggregate( Vector3.zero, ( s, part ) => s + Vector3.ProjectOnPlane( part.transform.rotation * ( part.bodyLiftScalar * part.DragCubes.LiftForce ), -part.dragVectorDir ) );
+
+					var liftSurfs = FlightGlobals.ActiveVessel.parts.Where( part => part.hasLiftModule ).SelectMany( part => part.Modules.GetModules<ModuleLiftingSurface>() );
+                    curDrag += liftSurfs.Aggregate( Vector3.zero, ( s, surf ) => s + surf.dragForce );
+					curLift += liftSurfs.Aggregate( Vector3.zero, ( s, surf ) => s + surf.liftForce );
+
+					var a = curDrag.magnitude;
+
+                    // var c = PhysicsGlobals.DragMultiplier;
+
+                    TerminalVelocity = Math.Sqrt((2.0 * m * g) / a);
+
+					Drag = curDrag;
+					Lift = curLift;
+				}
+
+				StaticPressure = FlightGlobals.ActiveVessel.staticPressurekPa;
+				DynamicPressure = FlightGlobals.ActiveVessel.dynamicPressurekPa;
 
                 Efficiency = FlightGlobals.ship_srfSpeed / TerminalVelocity;
             }
@@ -194,9 +233,17 @@ namespace KerbalEngineer.Flight.Readouts.Surface
                     {
                         case "FerramAerospaceResearch":
                             if ( loadedAssembly.versionMinor >= 15 )
+                            {
                                 this.farTerminalVelocity = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("ActiveVesselTermVelEst");
+                                this.farStallFrac = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("ActiveVesselStallFrac");
+                                this.farBallisticCoeff = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("ActiveVesselBallisticCoeff");
+                            }
                             else
+                            {
                                 this.farTerminalVelocity = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("GetActiveControlSys_TermVel");
+                                this.farStallFrac = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("GetActiveControlSys_StallFrac");
+                                this.farBallisticCoeff = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("GetActiveControlSys_BallisticCoeff");
+                            }
                             FarInstalled = true;
                             MyLogger.Log("FAR detected!");
                             break;
