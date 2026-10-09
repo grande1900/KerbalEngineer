@@ -193,7 +193,10 @@ namespace KerbalEngineer.Flight.Readouts.Surface
                     switch (loadedAssembly.name)
                     {
                         case "FerramAerospaceResearch":
-                            this.farTerminalVelocity = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("GetActiveControlSys_TermVel");
+                            if ( loadedAssembly.versionMinor >= 15 )
+                                this.farTerminalVelocity = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("ActiveVesselTermVelEst");
+                            else
+                                this.farTerminalVelocity = loadedAssembly.assembly.GetType("ferram4.FARAPI").GetMethod("GetActiveControlSys_TermVel");
                             FarInstalled = true;
                             MyLogger.Log("FAR detected!");
                             break;
