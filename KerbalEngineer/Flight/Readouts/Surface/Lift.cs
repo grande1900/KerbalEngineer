@@ -49,7 +49,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 			if ( AtmosphericProcessor.ShowDetails )
 			{
 				var plane = AtmosphericProcessor.Lift - Vector3d.Project( AtmosphericProcessor.Lift, FlightGlobals.ActiveVessel.srf_vel_direction );
-				var lift = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, plane );
+				var lift = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, plane.normalized );
 				this.DrawLine( lift.ToForce( section.IsHud ? HudDecimalPlaces : DecimalPlaces ), section );
 			}
 		}

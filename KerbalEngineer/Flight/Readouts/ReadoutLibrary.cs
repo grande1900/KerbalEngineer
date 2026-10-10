@@ -110,6 +110,8 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new LiftToWeight());
                 readouts.Add(new UpwardsForce());
                 readouts.Add(new Drag());
+                readouts.Add(new CdS());
+                readouts.Add(new ClS());
                 readouts.Add(new Latitude());
                 readouts.Add(new Longitude());
                 readouts.Add(new GeeForce());
@@ -162,6 +164,7 @@ namespace KerbalEngineer.Flight.Readouts {
                 readouts.Add(new AngleOfAttack());
                 readouts.Add(new AngleOfSideslip());
                 readouts.Add(new AngleOfDisplacement());
+                readouts.Add(new BallisticCoefficient());
                 readouts.Add(new Heading());
                 readouts.Add(new Pitch());
                 readouts.Add(new Roll());

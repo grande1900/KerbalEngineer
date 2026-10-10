@@ -134,12 +134,15 @@
     <Compile Include="Flight\Readouts\Rendezvous\TimeToRelativeAscendingNode.cs" />
     <Compile Include="Flight\Readouts\Rendezvous\TimeToTransferAngle.cs" />
     <Compile Include="Flight\Readouts\Surface\BearingToWaypoint.cs" />
+    <Compile Include="Flight\Readouts\Surface\ClS.cs" />
+    <Compile Include="Flight\Readouts\Surface\CdS.cs" />
     <Compile Include="Flight\Readouts\Surface\DynamicPressure.cs" />
     <Compile Include="Flight\Readouts\Surface\AtmosphericPressure.cs" />
     <Compile Include="Flight\Readouts\Surface\EquivalentAirspeed.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactMarker.cs" />
     <Compile Include="Flight\Readouts\Surface\ImpactBiome.cs" />
     <Compile Include="Flight\Readouts\Surface\Drag.cs" />
+    <Compile Include="Flight\Readouts\Surface\BallisticCoefficient.cs" />
     <Compile Include="Flight\Readouts\Surface\LiftToWeight.cs" />
     <Compile Include="Flight\Readouts\Surface\LiftToDrag.cs" />
     <Compile Include="Flight\Readouts\Surface\Lift.cs" />

@@ -20,25 +20,23 @@
 #region Using Directives
 
 using KerbalEngineer.Extensions;
-using KerbalEngineer.Flight.Readouts.Vessel;
 using KerbalEngineer.Flight.Sections;
 using System;
-
 
 #endregion
 
 namespace KerbalEngineer.Flight.Readouts.Surface
 {
-	public class LiftToDrag: ReadoutModule
+	public class BallisticCoefficient: ReadoutModule
 	{
 		#region Constructors
 
-		public LiftToDrag()
+		public BallisticCoefficient()
 		{
-			this.Name = "Lift to Drag Ratio";
-			this.ShortName = "LDR";
-			this.Category = ReadoutCategory.GetCategory( "Surface" );
-			this.HelpString = "Shows the vessel's current Lift/Drag ratio.";
+			this.Name = "Ballistic Coefficient";
+			this.ShortName = "Cb";
+			this.Category = ReadoutCategory.GetCategory( "Vessel" );
+			this.HelpString = "Shows the vessel's current Ballistic Coefficient.";
 			this.IsDefault = true;
 		}
 
@@ -50,10 +48,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 		{
 			if ( AtmosphericProcessor.ShowDetails )
 			{
-				var plane = AtmosphericProcessor.Lift - Vector3d.Project( AtmosphericProcessor.Lift, FlightGlobals.ActiveVessel.srf_vel_direction );
-				var lift = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, plane.normalized );
-				var drag = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, -FlightGlobals.ActiveVessel.srf_vel_direction );
-				this.DrawLine( ( lift / drag ).ToString( "F2" ), section );
+				this.DrawLine( AtmosphericProcessor.BallisticCoeff.ToString( "N3" ) + "kg/m²", section );
 			}
 		}
 

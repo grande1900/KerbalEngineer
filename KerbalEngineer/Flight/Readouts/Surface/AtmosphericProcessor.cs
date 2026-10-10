@@ -19,17 +19,17 @@
 
 #region Using Directives
 
+using KerbalEngineer.Extensions;
 using System;
 using System.Linq;
 using System.Reflection;
-
-using KerbalEngineer.Extensions;
 
 #endregion
 
 namespace KerbalEngineer.Flight.Readouts.Surface
 {
     using UnityEngine;
+	using static System.Collections.Specialized.BitVector32;
 
     public class AtmosphericProcessor : IUpdatable, IUpdateRequest
     {
@@ -160,7 +160,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 
 					var m = FlightGlobals.ActiveVessel.parts.Sum(part => PartExtensions.GetWetMass(part)) * 1000.0;
                     var g = FlightGlobals.getGeeForceAtPosition(FlightGlobals.ship_position).magnitude;
-                    var Q = 0.5 * p * FlightGlobals.ActiveVessel.srf_velocity.sqrMagnitude;
+                    var q = 0.5 * p * FlightGlobals.ActiveVessel.srf_velocity.sqrMagnitude;
 
 
 					var curLift = Vector3.zero;
@@ -175,11 +175,12 @@ namespace KerbalEngineer.Flight.Readouts.Surface
                     curDrag += liftSurfs.Aggregate( Vector3.zero, ( s, surf ) => s + surf.dragForce );
 					curLift += liftSurfs.Aggregate( Vector3.zero, ( s, surf ) => s + surf.liftForce );
 
-					var a = curDrag.magnitude;
+					var a = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, -FlightGlobals.ActiveVessel.srf_vel_direction );
 
                     // var c = PhysicsGlobals.DragMultiplier;
 
-                    TerminalVelocity = Math.Sqrt((2.0 * m * g) / a);
+                    BallisticCoeff = m / 1000.0 * q / a;
+					TerminalVelocity = Math.Sqrt( ( 2.0 * m * g ) / a );
 
 					Drag = curDrag;
 					Lift = curLift;

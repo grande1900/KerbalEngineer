@@ -20,25 +20,23 @@
 #region Using Directives
 
 using KerbalEngineer.Extensions;
-using KerbalEngineer.Flight.Readouts.Vessel;
 using KerbalEngineer.Flight.Sections;
 using System;
-
 
 #endregion
 
 namespace KerbalEngineer.Flight.Readouts.Surface
 {
-	public class LiftToDrag: ReadoutModule
+	public class ClS: ReadoutModule
 	{
 		#region Constructors
 
-		public LiftToDrag()
+		public ClS()
 		{
-			this.Name = "Lift to Drag Ratio";
-			this.ShortName = "LDR";
+			this.Name = "ClS";
+			this.ShortName = "ClS";
 			this.Category = ReadoutCategory.GetCategory( "Surface" );
-			this.HelpString = "Shows the vessel's current Lift/Drag ratio.";
+			this.HelpString = "Shows the vessel's current ClS force.";
 			this.IsDefault = true;
 		}
 
@@ -52,8 +50,7 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 			{
 				var plane = AtmosphericProcessor.Lift - Vector3d.Project( AtmosphericProcessor.Lift, FlightGlobals.ActiveVessel.srf_vel_direction );
 				var lift = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, plane.normalized );
-				var drag = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, -FlightGlobals.ActiveVessel.srf_vel_direction );
-				this.DrawLine( ( lift / drag ).ToString( "F2" ), section );
+				this.DrawLine( ( lift / FlightGlobals.ActiveVessel.dynamicPressurekPa ).ToString( "N3" ) + "m²", section );
 			}
 		}
 

@@ -56,8 +56,10 @@ namespace KerbalEngineer.Flight.Readouts.Surface
 		{
 			if ( SimulationProcessor.ShowDetails && AtmosphericProcessor.ShowDetails )
 			{
+				var plane = AtmosphericProcessor.Lift - Vector3d.Project( AtmosphericProcessor.Lift, FlightGlobals.ActiveVessel.srf_vel_direction );
+				var lift = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, plane.normalized );
 				this.gravity = FlightGlobals.getGeeForceAtPosition( FlightGlobals.ship_position );
-				var lwr = Vector3d.Dot( AtmosphericProcessor.Lift + AtmosphericProcessor.Drag, this.gravity * SimulationProcessor.LastStage.mass );
+				var lwr = lift / ( this.gravity * SimulationProcessor.LastStage.mass ).magnitude;
 				this.DrawLine( lwr.ToString( "F2" ), section );
 			}
 		}
